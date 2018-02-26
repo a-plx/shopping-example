@@ -32,6 +32,9 @@ type OfferDatabase interface {
 	// UpdateOffer updates the offer based on given information.
 	UpdateOffer(o *Offer) error
 
+	// UpdateUpdated sets all "updated" fields to false.
+	UpdateUpdated() error
+
 	// DeleteOffers deletes stale Offers.
 	DeleteOffers() error
 
@@ -39,3 +42,4 @@ type OfferDatabase interface {
 	// TODO(asheem): Close() should return an error.
 	Close()
 }
+
