@@ -91,10 +91,10 @@ body {
 </head>
 <body>
 <div class="topnav">
-  <a class="active" href="/offers">Best CSS</a>
+  <a href="/offers"><img src="https://is2-ssl.mzstatic.com/image/thumb/Purple128/v4/62/d8/9d/62d89d89-2a3b-38a5-02b9-a822dd99f822/AppIcon-1x_U007emarketing-85-220-0-6.png/246x0w.jpg" alt="logo" height="40" width="50">  Best CSS</a>
   <div class="search-container">
     <form action="/search">
-      <input type="text" placeholder="Search.." name="q">
+      <input type="text" placeholder="Search offers.." name="q">
       <button type="submit"><i class="fa fa-search"></i></button>
     </form>
   </div>
@@ -102,5 +102,16 @@ body {
 <div class="container">
   {{template "body" .Data}}
 </div>
+<nav class="navbar navbar-inverse navbar-fixed-bottom">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="/offers">Best CSS LLC</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li><a href="/privacy">Privacy&nbsp;&amp;&nbsp;Terms</a></li>
+      <li><a href="/about">About Us</a></li>
+    </ul>
+  </div>
+</nav>
 </body>
 </html>
