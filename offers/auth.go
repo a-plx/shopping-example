@@ -28,11 +28,6 @@ const (
 )
 
 func authWithGoogle(ctx context.Context, configPath string) *http.Client {
-	// First, check for the Application Default Credentials.
-	if client, err := google.DefaultClient(ctx, content.ContentScope); err == nil {
-		fmt.Println("Using Application Default Credentials.")
-		return client
-	}
 	// Other authentication options require there to be a configuration directory
 	// that contains the credentials.
 	if configPath == "" {
