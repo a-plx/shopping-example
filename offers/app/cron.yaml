@@ -1,8 +1,4 @@
-runtime: go
-api_version: go1
-
 cron:
 - description: "daily DB update"
   url: /tasks/update_db
   schedule: every 24 hours
-  login: admin
