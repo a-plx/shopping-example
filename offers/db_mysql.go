@@ -1,4 +1,4 @@
-// Copyright 2015 Google Inc. All rights reserved.
+// Copyright 2018 Google Inc. All rights reserved.
 // Use of this source code is governed by the Apache 2.0
 // license that can be found in the LICENSE file.
 
@@ -92,7 +92,9 @@ func newMySQLDB(config MySQLConfig) (OfferDatabase, error) {
 	if db.delete, err = conn.Prepare(deleteStatement); err != nil {
 		return nil, fmt.Errorf("mysql: prepare delete: %v", err)
 	}
-
+	if db.updateUpdated, err = conn.Prepare(updateUpdatedStatement); err != nil {
+		return nil, fmt.Errorf("mysql: prepare update updated: %v", err)
+	}
 	return db, nil
 }
 
@@ -246,6 +248,15 @@ func (db *mysqlDB) UpdateOffer(o *Offer) error {
 	return err
 }
 
+const updateUpdatedStatement = `UPDATE offers SET updated=false`
+
+// UpdateUpdatedField sets "updated" field to false.
+func (db *mysqlDB) UpdateUpdated() error {
+
+	_, err := db.updateUpdated.Exec()
+	return err
+}
+
 // ensureTableExists checks the table exists. If not, it creates it.
 func (config MySQLConfig) ensureTableExists() error {
 	conn, err := sql.Open("mysql", config.dataStoreName(""))
@@ -303,3 +314,4 @@ func execAffectingOneRow(stmt *sql.Stmt, args ...interface{}) (sql.Result, error
 	}
 	return r, nil
 }
+
