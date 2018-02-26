@@ -28,6 +28,8 @@ var (
 	listTmpl          = parseTemplate("list.html")
 	detailTmpl        = parseTemplate("detail.html")
 	updateSuccessTmpl = parseTemplate("update.html")
+	privacyTmpl       = parseTemplate("privacy.html")
+	aboutTmpl         = parseTemplate("about.html")
 )
 
 const (
@@ -51,6 +53,13 @@ func registerHandlers() {
 
 	r.Methods("GET").Path("/search").
 		Handler(appHandler(searchHandler))
+
+	// TODO(asheem): Add a handler for static pages instead.
+	r.Methods("GET").Path("/privacy").
+		Handler(appHandler(privacyHandler))
+
+	r.Methods("GET").Path("/about").
+		Handler(appHandler(aboutHandler))
 
 	r.Methods("GET").Path("/offers/{offer_id}").
 		Handler(appHandler(detailHandler))
@@ -78,6 +87,16 @@ func listHandler(w http.ResponseWriter, r *http.Request) *appError {
 		fmt.Printf("there was an error querying offers: %v", err)
 	}
 	return listTmpl.Execute(w, r, offers)
+}
+
+// privacyHandler displays privacy pages.
+func privacyHandler(w http.ResponseWriter, r *http.Request) *appError {
+	return privacyTmpl.Execute(w, r, nil)
+}
+
+// aboutHandler displays about pages.
+func aboutHandler(w http.ResponseWriter, r *http.Request) *appError {
+	return aboutTmpl.Execute(w, r, nil)
 }
 
 // searchHandler displays a list based on the search query.
@@ -157,3 +176,4 @@ func mustGetenv(k string) string {
 	}
 	return v
 }
+
