@@ -88,8 +88,10 @@ func RunUpdate(id int64, logFile string) {
 	if id == int64(0) {
 		log.Fatal("valid merchant_id should be provided")
 	}
-	if _, err := os.Stat(configPath); os.IsNotExist(err) {
-		log.Fatalf("Configuration directory %s does not exist", configPath)
+	if os.Getenv("GAE_INSTANCE") == "" {
+		if _, err := os.Stat(configPath); os.IsNotExist(err) {
+			log.Fatalf("Configuration directory %s does not exist", configPath)
+		}
 	}
 
 	// Set up the API service to be passed to the demos.
