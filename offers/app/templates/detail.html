@@ -1,0 +1,16 @@
+{{/*
+  Copyright 2018 Google Inc. All rights reserved.
+  Use of this source code is governed by the Apache 2.0
+  license that can be found in the LICENSE file.
+*/}}
+<div class="media">
+  <div class="card" style="width: 20rem;">
+    <img class="card-img-top" src="{{if .ImageURL}}{{.ImageURL}}{{else}}https://placekitten.com/g/200/300{{end}}" alt="Card image cap" height="100" width="100">
+    <div class="card-block">
+      <h4 class="card-title"><a href="/offers/{{.ID}}">{{.Title}}</a></h4>
+      <p class="card-text">{{.Description}}</p>
+      <p class="card-text">{{.Price}} {{.Currency}}</p>
+      <input type="button" class="btn btn-info" value="Go to offer" onclick="location.href = '{{.MerchantURL}}';">
+    </div>
+  </div>
+</div>
