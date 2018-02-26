@@ -6,8 +6,6 @@ import (
 	"log"
 	"net/url"
 	"os"
-	"os/user"
-	"path"
 	"strings"
 
 	"google.golang.org/api/content/v2"
@@ -18,6 +16,9 @@ const endpointEnvVar = "GOOGLE_SHOPPING_SAMPLES_ENDPOINT"
 
 // The main business logic of updating offers information in the DB lies here.
 func updateOffersData(ctx context.Context, service *content.APIService, account *content.Account, isMCA bool) {
+	if err := DB.UpdateUpdated(); err != nil {
+		log.Fatalf("updating updating field failed: %v", err)
+	}
 	updateProductsList := func(account *content.Account) error {
 		products := content.NewProductsService(service)
 		listCall := products.List(account.Id)
@@ -79,36 +80,17 @@ func dumpAPIErrorAndStop(e error, prefix string) {
 // RunUpdate runs the pipeline to update the sqlDB using the latest data from
 // the content API.
 func RunUpdate(id int64, logFile string) {
-	usr, err := user.Current()
-	if err != nil {
-		log.Fatal(err)
-	}
-	configPath := path.Join(usr.HomeDir, "merchant-center")
-	logFilePath := path.Join(usr.HomeDir, logFile)
+	configPath := "merchant-center"
 	if id == int64(0) {
 		log.Fatal("valid merchant_id should be provided")
 	}
-	if os.Getenv("GAE_INSTANCE") == "" {
-		if _, err := os.Stat(configPath); os.IsNotExist(err) {
-			log.Fatalf("Configuration directory %s does not exist", configPath)
-		}
+	if _, err := os.Stat(configPath); os.IsNotExist(err) {
+		log.Fatalf("Configuration directory %s does not exist", configPath)
 	}
 
 	// Set up the API service to be passed to the demos.
 	ctx := context.Background()
 	client := authWithGoogle(ctx, configPath)
-	if logFile != "" {
-		f, err := os.OpenFile(logFilePath, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0644)
-		if err != nil {
-			log.Fatalf("Failed to open log file: %s", err.Error())
-		}
-		defer func() {
-			if err := f.Close(); err != nil {
-				log.Fatalf("Failed to close log file: %s", err.Error())
-			}
-		}()
-		logClient(client, f)
-	}
 	contentService, err := content.New(client)
 	if err != nil {
 		log.Fatal(err)
