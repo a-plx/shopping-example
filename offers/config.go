@@ -35,12 +35,13 @@ var createTableStatements = []string{
 type mysqlDB struct {
 	conn *sql.DB
 
-	list   *sql.Stmt
-	listBy *sql.Stmt
-	insert *sql.Stmt
-	get    *sql.Stmt
-	update *sql.Stmt
-	delete *sql.Stmt
+	list          *sql.Stmt
+	listBy        *sql.Stmt
+	insert        *sql.Stmt
+	get           *sql.Stmt
+	update        *sql.Stmt
+	updateUpdated *sql.Stmt
+	delete        *sql.Stmt
 }
 
 func init() {
